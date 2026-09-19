@@ -1,79 +1,65 @@
-#IFNDEF "RESERVATIONMANAGEMENT_H"
-#DEFINE "RESERVATIONMANAGEMENT_H"
-#include <string>
-#include <iostream>
+#ifndef "RESERVATIONMANAGEMENT_H"
+#define "RESERVATIONMANAGEMENT_H"
 
-/*
-Reservation Management
-Users shall be able to:
+#include "Reservation.h"
+#include <queue>
+#include <stack>
+using namespace std;
 
-Create a reservation.
-Cancel a reservation.
-View current reservations.
-Search for reservations.
-Each reservation must contain:
+//node structure for linked list to store all active reservations
+struct ReservationNode{
+  Reservation data; //reservation stored in node
+  Reservation* next;//ptr to the next node (current -> next)
 
-Reservation ID
-Student ID
-Student Name
-Resource ID
-Reservation Date
-Waiting List Management
-When a resource is unavailable:
-
-Student requests must be placed in a waiting queue.
-Requests must be processed in FIFO order.
-Available resources must automatically be assigned to the next waiting user.
-Reservation History
-The system shall maintain a cancellation history.
-
-When a reservation is cancelled:
-
-It is stored on a stack.
-Users may undo the most recent cancellation.
-Only the most recently cancelled reservation may be restored.
-
-Reporting
-The system shall generate reports including:
-
-Most frequently reserved resources
-Current availability
-Number of active reservations
-Waiting list reports
-*/
+  //contructor to initialize node with Reservation obj, sets next to nullptr
+  ReservationNode(Reservation r) : data(r), next(nullptr) {}
+};
 
 //RESERVATION MANAGEMENT
+/*
+* Stores active reservations using a linked list
+* Maintain a waiting list using queue, FIFO
+* Maintain cancellation history using stack, also FIFO
+* Create, search, view, cancel reservations
+* Restore recently cancelled reservation
+*/
 class ReservationManager{
   private:
+    //points to first node in the linked list
+    ReservationNode* head;
 
-
+    //wait list queue, reserve requests placed here, processed FIFO
+    queue<Reservation> waitList;
+    //stores cancelled reservation, most recent is placed on top of stack and can be restored with undoCancel
+    stack<Reservation> cancelHistory;
 
   public:
+    //default constructor
+    ReservationManager();
+    //destructor
+    ~ReservationManager();
+
+    //adds new reservation to active linked list, r is Reservation object to be added
+    void createReserv(Reservation r);
+
+    //cancels an existing reservation, cancelled reservation is removed from linkedlist
+    bool cancelReserv(int placeholdReservID)//replace with actual rID
+
+    //searches reservation with ID
+    Reservation* searchReserv(int placeholdReservID);//same thing
+
+    //displays all active reservations in linked list
+    void viewReservations();
+
+    //adds reservation request to wait list queue
+    void addToWaitList();
+
+    //processes next reservation in wait list queue
+    void processWaitList();
+
+    //restores most recent cancelled reservation from stack
+    void undoCancel();
 
 };
 
-//WAITING LIST
-class WaitingList{
-  private:
-
-  public:
-
-};
-
-//CANCELATION
-class CancelationHistory{
-  private:
-
-  public:
-
-};
-
-//REPORT GEN
-class ReportGenerator{
-  private:
-
-  public:
-
-};
-
-#ENDIF
+#endif
