@@ -110,4 +110,48 @@ bool ReservationManager::cancelReserv(int reservationID){
 
 //adding reservation request to wait list queue
 void ReservationManager::addToWaitList(Reservation r) {
+  waitList.push(r);
 
+  cout << "Reservation added to wait list" << endl;
+}
+
+void ReservationManager::processWaitList(){
+
+  //wait requests empty
+  if (waitList.empty()){
+    return;
+  }
+
+  //get first reservation request
+  Reservation nextReservation = waitList.front();
+
+  //remove from queue
+  waitList.pop()
+
+  //add to active reservations list
+  createReservation(nextReservation);
+
+  cout << "Next waiting reservation now in list." << endl;
+}
+
+//restore most recent cancelation
+void ReservationManager::undoCancel(){
+  //check if stack has items
+  if (cancelHistory.em[ty()){
+    cout << "Unable to Undo: No cancellations available" << endl;
+
+    return;
+  }
+
+  //retrieve most recent  cancelled reservation
+  Reservation restored = cancelHistory.top();
+
+  //remove recently cancelled from stack
+  cancelHistory.pop();
+
+  //insert cancelled reservation into active reservation
+  createReservation(restored);
+
+  cout << "Cancelled reservation has been retrieved, reservation now active." << endl; 
+  
+}
