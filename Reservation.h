@@ -40,6 +40,9 @@ int getReservationID() const;
     bool isActive() const;
     bool isValid() const;
     bool conflictsWith(const Reservation& other) const; // Checks whether this reservation overlaps with another reservation.
+    void cancel();
+    void restore();
+
     void display() const;
 };
 
