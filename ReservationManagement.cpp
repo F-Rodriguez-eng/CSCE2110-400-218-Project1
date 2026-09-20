@@ -16,4 +16,48 @@ ReservationManager::~ReservationManager(){
   }
 }
 
-//creates Reservation
+//creates new reservation node, inserts at beginning of linked list, r is reservation obj
+void ReservationManager::createReserv(Reservation r){
+  //create node
+  ReservationNode* newNode = new ReservationNode(r);
+
+  //insert node at front of list
+  newNode->next = head;
+  head = newNode;
+
+  cout << "Your reservation was created successfully." << endl;
+}
+
+//dispalys all active reservations (excluding recently cancelled)
+void ReservationManager::viewR
+
+
+
+
+
+Reservation* ReservationManager::searchReserv
+
+
+
+bool ReservationManager::cancelReservation(int placeholdReservID){
+
+
+
+}
+
+
+void ReservationManager::addToWaitList(Reservation r){
+
+
+}
+
+
+void ReservationManager::processWaitList(){
+
+
+}
+
+
+void ReservationManger::undoCancel(){
+
+}
