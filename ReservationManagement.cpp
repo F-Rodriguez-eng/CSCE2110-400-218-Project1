@@ -84,11 +84,30 @@ bool ReservationManager::cancelReserv(int reservationID){
       cancelHistory.push(current->data);
 
       //remove first node
-      
+      if (previous->next = current->next){
+        head = current->next;
+      }
 
       //remove mid or last node
+      else{
+       previous->next = current->;
+      }
+
+      delete current;
+      cout << "You have canceled the reservation" << endl;
+
+      //reassign reservation to next on waiting list
+      return true;
     }
 
+    previous = current;
+    current = current->next
   }
 
+  //chosen reservation not found
+  return false
 }
+
+//adding reservation request to wait list queue
+void ReservationManager::addToWaitList(Reservation r) {
+
