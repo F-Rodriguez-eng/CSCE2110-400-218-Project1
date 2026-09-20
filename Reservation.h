@@ -28,3 +28,19 @@ public:
         const std::string& startTime,
         const std::string& endTime
     );
+
+int getReservationID() const;
+    std::string getStudentID() const;
+    std::string getResourceID() const;
+    std::string getDate() const;
+    std::string getStartTime() const;
+    std::string getEndTime() const;
+
+    // Returns true if the reservation has not been cancelled.
+    bool isActive() const;
+    bool isValid() const;
+    bool conflictsWith(const Reservation& other) const; // Checks whether this reservation overlaps with another reservation.
+    void display() const;
+};
+
+#endif
