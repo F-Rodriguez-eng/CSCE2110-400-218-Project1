@@ -12,11 +12,42 @@ using namespace std;
 //WAITING LIST
 class WaitingList{
   private:
-string studentID
-string studentName
-string resource ID
+//
+string studentID;
+string studentName;
+string resource ID;
 string requestDate;
-  public:
+int entryposition;
+  
+public:
+    // Contructor
+    // Initializes a new waiting list entry
+  WaitingListEntry(const string& studID = "", 
+                     const string& studName = "",
+                     const string& resID = "", 
+                     const string& date = ""); // Getters  
+// Get student ID
+string getStudentID() const;      
+// Returns student name
+string getStudentName() const;   
+// Returns resource ID
+string getResourceID() const;     
+// Returns request date
+string getRequestDate() const;    
+ // Returns position in queue
+ int getEntryPosition() const;         
+    
+    
+  // Setters
+  //This sets the position in the queue
+  void setEntryPosition(int pos);        
+
+  // This displays the entry
+  void display() const;                  
+
+  // Operator overload that compares the entries
+   bool operator==(const WaitingListEntry& other) const;  // Compare entries
+};
 
 };
 
