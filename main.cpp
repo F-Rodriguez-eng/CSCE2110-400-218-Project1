@@ -6,6 +6,7 @@
 #include ReservationMnagement.h
 #include <iostream>
 #include <string>  
+#include <stack>
 
 using namespace std;
 
@@ -52,11 +53,47 @@ string getRequestDate() const;
 };
 
 //CANCELATION
-class CancelationHistory{
-  private:
+// CANCELLATION HISTORY
+class CancelationHistory {
+private:
+    stack<Reservation> cancelHistory;
 
-  public:
+public:
+    void push(const Reservation& reservation) {
+        cancelHistory.push(reservation);
+    }
+    bool empty() const {
+        return cancelHistory.empty();
+    }
 
+    Reservation top() const {
+        if (cancelHistory.empty()) {
+            cout << "No cancelled reservations available." << endl;
+            return Reservation();
+        }
+        return cancelHistory.top();
+    }
+
+    void pop() {
+        if (!cancelHistory.empty()) {
+            cancelHistory.pop();
+        } // removes most recently canceled 
+    }
+
+    void displayHistory() const {
+        if (cancelHistory.empty()) {
+            cout << "No cancellation history." << endl;
+            return;
+        }
+        stack<Reservation> temp = cancelHistory;
+        cout << "Cancellation History:" << endl;
+        cout << "********************" << endl;
+        while (!temp.empty()) 
+            temp.top().display();
+            cout << "********************" << endl;
+            temp.pop();
+        }
+    }
 };
 
 //REPORT GEN
