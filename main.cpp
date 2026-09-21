@@ -62,7 +62,23 @@ class CancelationHistory{
 //REPORT GEN
 class ReportGenerator{
   private:
+    ReservationManager* reservationManager;
+    vector<Resource>* resources;
 
   public:
+    //Initializing object
+    ReportGenerator(ReservationManger* rm, vector<Resource>* resources);
 
+    //Generates Availability Report
+    void availabilityReport();
+    //Generates Reservations Currently Active
+    void activeReservationReport();
+    //Generates Waiting list Report
+    void waitListReport();
+    //Generates most frequent;y requested resources report
+    void mostFrequentRsrcReport();
 };
+
+void ReportGenerator::availabilityReport(){
+  cout << "\n==== Current Availability ====\n";
+}
