@@ -39,6 +39,8 @@ class ReservationManager{
     //destructor
     ~ReservationManager();
 
+    int getActiveReservationCount();
+
     //adds new reservation to active linked list, r is Reservation object to be added
     void createReserv(Reservation r);
 
