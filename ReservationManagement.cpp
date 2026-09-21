@@ -16,6 +16,19 @@ ReservationManager::~ReservationManager(){
   }
 }
 
+int ReservationManager::getActiveReservationCount(){
+  int count = 0;
+
+  ReservationNode* current = head;
+
+  while (current != nullptr){
+    count++;
+    current = current->next;
+  }
+
+  return count;
+}
+
 //creates Reservation
 void ReservationManager::createReserv(Reservation r){
   //create new node containing reservation
