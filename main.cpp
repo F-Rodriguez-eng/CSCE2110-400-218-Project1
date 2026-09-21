@@ -7,6 +7,7 @@
 #include <iostream>
 #include <string>  
 #include <stack>
+#include <map>
 
 using namespace std;
 
@@ -116,6 +117,75 @@ class ReportGenerator{
     void mostFrequentRsrcReport();
 };
 
+//Availability
 void ReportGenerator::availabilityReport(){
   cout << "\n==== Current Availability ====\n";
+
+  for(const Resource& resource : *resources){
+    cout << resource << endl;
+  }//Work In Progress
+
 }
+
+//Active
+void ReportGenerator::activeReservationReport(){
+  cout << "\n==== Avtice Reservations Report ====\n";
+
+  cout << "Total Active Reservations: " << reservationManager->getActiveReservationCount() << endl;
+} //Work In Progress
+
+void ReportGenerator::waitListReport(){
+  cout << "\n==== Waiting List Availability ====\n";
+
+  reservationManager->waitListReport();
+}
+
+void ReportGenerator::mostFrequentRsrcReport(){
+  cout << "\n==== Most Frequently Request Resources Report ====\n";
+  
+  map<string, int> resourceCount;
+
+  ReservationNode* current = reservationManager->getHead();
+
+  while (current!=nullptr){
+    string resourceID = current->data.getResourceID();//make get function
+
+    resourceCount[resourceID]++;
+
+    current = current->next;
+  }
+
+  if (resourceCount.empty()){
+    cout << "No reservations found." <<endl;
+    return;
+  }
+
+  string mostFrequentRsrc;
+  int highestCount = 0;
+
+  for (const auto& pair : resourceCount){
+    if (pair.second > highsetCount){
+      highestCount = pair.second;
+      mostFrequentRsrc = pair.first;
+    }
+  }
+
+  cout << "Most Requested Resource ID: " << mostFrequentRsrc << endl;
+  cout << "Number of Reservations: " << highestCount << endl;
+}
+
+void displayMenu(){
+  cout << "\n===== Campus Resource Reservation System =====" << endl;
+  cout << "1. View Resources" << endl;
+  cout << "2. Create Reservation" << endl;
+  cout << "3. Cancel Reservation" << endl;
+  cout << "4. View Waiting Lists" << endl;
+  cout << "5. Undo Cancellation" << endl;
+  cout << "6. Search Reservations" << endl;
+  cout << "7. Sort Resources" << endl;
+  cout << "8. Generate Report" << endl;
+  cout << "9. Exit" << endl;
+  cout << "Enter Choice: ";
+}
+
+
