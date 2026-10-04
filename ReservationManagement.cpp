@@ -1,4 +1,4 @@
-#include "ReservationManager.h"
+#include "ReservationManagement.h"
 
 //default constructor, inits linked list by setting head ptr to nullptr, meaning no active reservations
 ReservationManager::ReservationManager(){
