@@ -1,6 +1,6 @@
 #include Resource.h
 #include Resource.cpp
-#include Reservation.cpp
+#include Reservation.cpp //headers only
 #include Reservation.h
 #include ReservationManagement.cpp
 #include ReservationMnagement.h

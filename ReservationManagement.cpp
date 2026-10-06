@@ -1,4 +1,5 @@
-#include "ReservationManager.h"
+#include ReservationManagement.h
+#include <iostream>
 
 //default constructor, inits linked list by setting head ptr to nullptr, meaning no active reservations
 ReservationManager::ReservationManager(){
@@ -27,6 +28,10 @@ int ReservationManager::getActiveReservationCount(){
   }
 
   return count;
+}
+
+ReservationNode* ReservationManager::getHead() const{
+  return head;
 }
 
 //creates Reservation
@@ -103,7 +108,7 @@ bool ReservationManager::cancelReserv(int reservationID){
 
       //remove mid or last node
       else{
-       previous->next = current->;
+       previous->next = current->next;
       }
 
       delete current;
@@ -147,10 +152,28 @@ void ReservationManager::processWaitList(){
   cout << "Next waiting reservation now in list." << endl;
 }
 
+void ReservationManager::waitListReport(){
+  if (waitList.empty()){
+    cout << "Wait list is empty." << endl;
+    return;
+  }
+
+  queue<Reservation> temp = waitList;
+  int position = 1;
+
+  while (!temp.empty()){
+    cout << "Position " << position << ":" << endl;
+    temp.front().display();
+
+    temp.pop();
+    position++;
+  }
+}
+
 //restore most recent cancelation
 void ReservationManager::undoCancel(){
   //check if stack has items
-  if (cancelHistory.em[ty()){
+  if (cancelHistory.empty()){
     cout << "Unable to Undo: No cancellations available" << endl;
 
     return;
@@ -163,6 +186,7 @@ void ReservationManager::undoCancel(){
   cancelHistory.pop();
 
   //insert cancelled reservation into active reservation
+  restored.restore();
   createReservation(restored);
 
   cout << "Cancelled reservation has been retrieved, reservation now active." << endl; 

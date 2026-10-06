@@ -1,5 +1,5 @@
-#ifndef "RESERVATIONMANAGEMENT_H"
-#define "RESERVATIONMANAGEMENT_H"
+#ifndef RESERVATIONMANAGEMENT_H
+#define RESERVATIONMANAGEMENT_H
 
 #include "Reservation.h"
 #include <queue>
@@ -9,7 +9,7 @@ using namespace std;
 //node structure for linked list to store all active reservations
 struct ReservationNode{
   Reservation data; //reservation stored in node
-  Reservation* next;//ptr to the next node (current -> next)
+  ReservationNode* next;//ptr to the next node (current -> next)
 
   //contructor to initialize node with Reservation obj, sets next to nullptr
   ReservationNode(Reservation r) : data(r), next(nullptr) {}
@@ -19,7 +19,7 @@ struct ReservationNode{
 /*
 * Stores active reservations using a linked list
 * Maintain a waiting list using queue, FIFO
-* Maintain cancellation history using stack, also FIFO
+* Maintain cancellation history using stack, LIFO
 * Create, search, view, cancel reservations
 * Restore recently cancelled reservation
 */
@@ -39,16 +39,22 @@ class ReservationManager{
     //destructor
     ~ReservationManager();
 
+    ReservationManager(const ReservationManager&) = delete;
+
+    ReservationManager& operator=(const ReservationManager&) = delete;
+
     int getActiveReservationCount();
+
+    ReservationNode* getHead() const;
 
     //adds new reservation to active linked list, r is Reservation object to be added
     void createReserv(Reservation r);
 
     //cancels an existing reservation, cancelled reservation is removed from linkedlist
-    bool cancelReserv(int placeholdReservID)//replace with actual rID
+    bool cancelReserv(int reservationID); //replace with actual rID
 
     //searches reservation with ID
-    Reservation* searchReserv(int placeholdReservID);//same thing
+    Reservation* searchReserv(int reservationID); //same thing
 
     //displays all active reservations in linked list
     void viewReservations();
@@ -58,6 +64,9 @@ class ReservationManager{
 
     //processes next reservation in wait list queue
     void processWaitList();
+
+    //reservation request in wait list queue display
+    void waitListReport();
 
     //restores most recent cancelled reservation from stack
     void undoCancel();
