@@ -24,7 +24,7 @@ int entryposition;
 public:
     // Contructor
     // Initializes a new waiting list entry
-  WaitingListEntry(const string& studID = "", 
+  WaitingList(const string& studID = "", 
                      const string& studName = "",
                      const string& resID = "", 
                      const string& date = ""); // Getters  
@@ -48,10 +48,10 @@ string getRequestDate() const;
   void display() const;                  
 
   // Operator overload that compares the entries
-   bool operator==(const WaitingListEntry& other) const;  // Compare entries
+   bool operator==(const WaitingList& other) const;  // Compare entries
 };
 
-};
+
 
 //CANCELATION
 // CANCELLATION HISTORY
