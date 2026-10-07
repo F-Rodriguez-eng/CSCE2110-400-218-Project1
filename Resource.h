@@ -19,7 +19,7 @@ public:
       //Everything held under resource
     Resource(const string& id, const string& name, const string& type, bool available);
 
-    //we need to get the all the accessors above 
+    //we need to get all the accessors above 
     string getResourceID() const;
 
 
