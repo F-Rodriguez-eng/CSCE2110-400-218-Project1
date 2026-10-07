@@ -186,6 +186,46 @@ void displayMenu(){
   cout << "8. Generate Report" << endl;
   cout << "9. Exit" << endl;
   cout << "Enter Choice: ";
+
+    //we will use the switch statement to check the user's statement and call the right function
+    //we will call all the functions on the display menu as cases
+    switch (choice){
+    //for the first case, we will call all the campus resources
+        case 1:
+        displayResources();
+        break;
+        
+    //create a reservation for a student and add to the waiting list if not available
+        case 2:
+        createReservation();
+        break;
+    //Case 3 cancels an existing reservation and placing it on the cancellationhistory
+        case 3:
+        cancelReservation();
+        break;
+    //disaplay waiting list
+        case 4:
+        displayWaitingLists();
+    //Show the recent cancelled reservation
+        case 5:
+        undoCancellation();
+        break;
+    //search for reservation 
+        case 6:
+        searchReservation();
+        break;
+    //Sorts all resources    
+        case 7:
+        sortResources();
+        break;
+        
+    //gives reports on most elements above  
+        case 8:
+        generateReport();
+        break;
+    }
+       
+  
 }
 
 
