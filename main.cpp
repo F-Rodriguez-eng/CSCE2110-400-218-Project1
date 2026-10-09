@@ -208,6 +208,75 @@ string trim(const string& text){
     return text.substr(start, end - start + 1);
 }
 
+string toUpper(string text){
+    for (size_t i = 0; i < text.length(); i++){
+        text[i] = toupprt(static_cast<unsigned char>(text[i]));
+    }
+    return text;
+}
+
+//if text is whole num with nothing after then true
+bool parseInt(const string& text, int& value){
+    stringstream strstrm(text);
+    char extra;
+
+    if(!(strstrm >> value)){
+        return false;
+    }
+
+    if(strstrm >> extra){
+        return false;
+    }
+
+    return true;
+}
+
+string readLin(const string& prompt){
+    cout << prompt;
+
+    string line;
+
+    //end of file, nothing left to read
+    if (!getLin(cin, line)){
+        cout << "\nInput closed. Goodbye." << endl;
+        exit(0);
+    }
+
+    return trim(line);
+}
+
+//continues prompting until something is typed
+string readNotEmpty(const string& prompt){
+    while (true){
+        string line = readlin(prompt);
+
+        if (!line.empty()){
+            return line;
+        }
+
+        cout << "Input can't be empty. Try again." << endl;
+    }
+}
+
+//continues prompting for whole num from min to max is typed
+int readInt(const string& prompt){
+    while(true){
+        string ans = toUpper(readLin(prompt));
+
+        if (ans == "Y" || ans == "YES"){
+            return true;
+        }
+
+        if (ans == "N" || ans == "NO"){
+            return false;
+        }
+
+        cout << "Please enter y or n" << endl;
+    }
+}
+
+
+//menu display
 void displayMenu(){
   cout << "\n===== Campus Resource Reservation System =====" << endl;
   cout << "1. View Resources" << endl;
