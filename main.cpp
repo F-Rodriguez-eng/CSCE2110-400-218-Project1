@@ -1,15 +1,23 @@
 #include Resource.h
-#include Resource.cpp
-#include Reservation.cpp //headers only
+//#include Resource.cpp
+//#include Reservation.cpp //headers only
 #include Reservation.h
-#include ReservationManagement.cpp
+//#include ReservationManagement.cpp
 #include ReservationMnagement.h
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <string>  
 #include <stack>
 #include <map>
+#include <cctpye>
+#include <stdlib>
 
 using namespace std;
+
+const string RESOURCE_FILE = "resources.txt";
+const string RESERVATION_FILE = "reservations.txt";
+const int MAX_RESERVID = 1000;
 
 //WAITING LIST
 class WaitingList{
@@ -17,14 +25,14 @@ class WaitingList{
 //
 string studentID;
 string studentName;
-string resource ID;
+string resourceID;
 string requestDate;
 int entryposition;
   
 public:
     // Contructor
     // Initializes a new waiting list entry
-  WaitingList(const string& studID = "", 
+  WaitingList(const string& studID = "",
                      const string& studName = "",
                      const string& resID = "", 
                      const string& date = ""); // Getters  
@@ -94,8 +102,7 @@ public:
             cout << "********************" << endl;
             temp.pop();
         }
-    }
-};
+}
 
 //REPORT GEN
 class ReportGenerator{
@@ -113,33 +120,46 @@ class ReportGenerator{
     void activeReservationReport();
     //Generates Waiting list Report
     void waitListReport();
-    //Generates most frequent;y requested resources report
+    //Generates most frequently requested resources report
     void mostFrequentRsrcReport();
 };
 
-//Availability
-void ReportGenerator::availabilityReport(){
-  cout << "\n==== Current Availability ====\n";
-
-  for(const Resource& resource : *resources){
-    cout << resource << endl;
-  }//Work In Progress
-
+//report generator
+ReportGenerator::ReportGenerator(ReservationManager* rm, vector<Resource>* resources){
+    reservationManager = rm;
+    this->resources = resources;
 }
 
-//Active
+//Availability resport
+void ReportGenerator::availabilityReport(){
+    cout << "\n==== Current Availability ====\n";
+
+    for(const Resource& resource : *resources){
+        cout << resource << endl;
+
+        if (resource.getIsAvailable()){
+        availableCount++;
+        }
+    }
+
+    cout << "Available resources: " << availableCount << " of " << resources->size() << endl;
+}
+//Active reservation report
 void ReportGenerator::activeReservationReport(){
-  cout << "\n==== Avtice Reservations Report ====\n";
+  cout << "\n==== Active Reservations Report ====\n";
 
   cout << "Total Active Reservations: " << reservationManager->getActiveReservationCount() << endl;
-} //Work In Progress
+}
 
+
+//wait list report
 void ReportGenerator::waitListReport(){
   cout << "\n==== Waiting List Availability ====\n";
 
   reservationManager->waitListReport();
 }
 
+//most freq resource report
 void ReportGenerator::mostFrequentRsrcReport(){
   cout << "\n==== Most Frequently Request Resources Report ====\n";
   
@@ -148,30 +168,44 @@ void ReportGenerator::mostFrequentRsrcReport(){
   ReservationNode* current = reservationManager->getHead();
 
   while (current!=nullptr){
-    string resourceID = current->data.getResourceID();//make get function
+    string resourceID = current->data.getResourceID();
 
     resourceCount[resourceID]++;
 
     current = current->next;
-  }
+    }
 
-  if (resourceCount.empty()){
+    if (resourceCount.empty()){
     cout << "No reservations found." <<endl;
     return;
-  }
+    }
 
-  string mostFrequentRsrc;
-  int highestCount = 0;
+    string mostFrequentRsrc;
+    int highestCount = 0;
 
-  for (const auto& pair : resourceCount){
-    if (pair.second > highsetCount){
-      highestCount = pair.second;
-      mostFrequentRsrc = pair.first;
+    for (const auto& pair : resourceCount){
+        if (pair.second > highestCount){
+            highestCount = pair.second;
+            mostFrequentRsrc = pair.first;
     }
   }
 
   cout << "Most Requested Resource ID: " << mostFrequentRsrc << endl;
   cout << "Number of Reservations: " << highestCount << endl;
+}
+
+//input reading helpers
+
+//white space cleaning
+string trim(const string& text){
+    size_t start = text.find_first_not_of(" \t\r\n");
+
+    if (start == string::npos){
+        return "";
+    }
+
+    size_t end = text.find_last_not_of(" \t\r\n");
+    return text.substr(start, end - start + 1);
 }
 
 void displayMenu(){
