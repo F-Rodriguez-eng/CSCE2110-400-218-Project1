@@ -1,12 +1,13 @@
-#include Resource.h
+#include "Resource.h"
 //#include Resource.cpp
 //#include Reservation.cpp //headers only
-#include Reservation.h
+#include "Reservation.h"
 //#include ReservationManagement.cpp
-#include ReservationMnagement.h
+#include "ReservationMnagement.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <vector>
 #include <string>  
 #include <stack>
 #include <map>
@@ -28,38 +29,80 @@ string studentName;
 string resourceID;
 string requestDate;
 int entryposition;
-  
+
 public:
     // Contructor
     // Initializes a new waiting list entry
   WaitingList(const string& studID = "",
                      const string& studName = "",
-                     const string& resID = "", 
-                     const string& date = ""); // Getters  
+                     const string& resID = "",
+                     const string& date = ""); // Getters
 // Get student ID
-string getStudentID() const;      
+string getStudentID() const;
 // Returns student name
-string getStudentName() const;   
+string getStudentName() const;
 // Returns resource ID
-string getResourceID() const;     
+string getResourceID() const;
 // Returns request date
-string getRequestDate() const;    
+string getRequestDate() const;
  // Returns position in queue
- int getEntryPosition() const;         
+ int getEntryPosition() const;
     
     
   // Setters
   //This sets the position in the queue
-  void setEntryPosition(int pos);        
+  void setEntryPosition(int pos);
 
   // This displays the entry
-  void display() const;                  
+  void display() const;
 
   // Operator overload that compares the entries
    bool operator==(const WaitingList& other) const;  // Compare entries
 };
 
+WaitingList::WaitingList(const string& stuID, const string& studName, const string& resID, const string& date){
+    studentID = stuID;
+    studentName = studName;
+    resourceID = resID;
+    requestDate = date;
+    entryposition = 0;
+}
 
+string Waitinglist::getStudentID() const{
+    return studentID;
+}
+
+string Waitinglist::getStudentName() const{
+    return studentName;
+}
+
+string Waitinglist::getResourceID() const{
+    return resourceID;
+}
+
+string Waitinglist::getRequestDate() const{
+    return requestDate;
+}
+
+int WaitingList::getEntryPosition() const{
+    return entryposition;
+}
+
+void WaitingList::setEntryPosition(int pos){
+    entryposition = pos;
+}
+
+void WaitingList::display() const{
+    cout << "Position " << entryposition << endl << 
+    "Student ID: " << studentID << endl <<
+    "Name: " << studentName << endl <<
+    "Resource: " << resourceID << endl <<
+    "Date: " << requestDate << endl;
+}
+
+bool WaitingList::operator==(const WaitingList& rhs) const{
+    return studentID == rhs.studentID && resourceID == rhs.studentID && requestDate == rhs.requestDate;
+}
 
 //CANCELATION
 // CANCELLATION HISTORY
@@ -95,24 +138,26 @@ public:
             return;
         }
         stack<Reservation> temp = cancelHistory;
-        cout << "Cancellation History:" << endl;
+        cout << "Cancellation History:" << endl;//LIFO
         cout << "********************" << endl;
-        while (!temp.empty()) 
+        while (!temp.empty()) {
             temp.top().display();
             cout << "********************" << endl;
             temp.pop();
         }
-}
+    }
+};
 
 //REPORT GEN
 class ReportGenerator{
   private:
     ReservationManager* reservationManager;
     vector<Resource>* resources;
+    queue<WaitingList>* WaitingList;
 
-  public:
+    public:
     //Initializing object
-    ReportGenerator(ReservationManger* rm, vector<Resource>* resources);
+    ReportGenerator(ReservationManager* rm, vector<Resource>* resources, queue<WaitingList>* waitingList);
 
     //Generates Availability Report
     void availabilityReport();
@@ -125,14 +170,17 @@ class ReportGenerator{
 };
 
 //report generator
-ReportGenerator::ReportGenerator(ReservationManager* rm, vector<Resource>* resources){
+ReportGenerator::ReportGenerator(ReservationManager* rm, vector<Resource>* resources, queue<WaitingList>* waitingList){
     reservationManager = rm;
     this->resources = resources;
+    this->WaitingList = waitingList;
 }
 
 //Availability resport
 void ReportGenerator::availabilityReport(){
     cout << "\n==== Current Availability ====\n";
+
+    int availableCount = 0;
 
     for(const Resource& resource : *resources){
         cout << resource << endl;
@@ -146,23 +194,30 @@ void ReportGenerator::availabilityReport(){
 }
 //Active reservation report
 void ReportGenerator::activeReservationReport(){
-  cout << "\n==== Active Reservations Report ====\n";
+    cout << "\n==== Active Reservations Report ====\n";
 
-  cout << "Total Active Reservations: " << reservationManager->getActiveReservationCount() << endl;
+    cout << "Total Active Reservations: " << reservationManager->getActiveReservationCount() << endl;
 }
 
 
 //wait list report
 void ReportGenerator::waitListReport(){
-  cout << "\n==== Waiting List Availability ====\n";
+    cout << "\n==== Waiting List Availability ====\n";
 
-  reservationManager->waitListReport();
+    cout << "Students waiting: " << waitingList->size() << endl;
+
+    queue<WaitingList> temp = *waitingList;
+
+    while (!temp.empty()){
+        temp.front().display();
+        temp.pop();
+    }
 }
 
 //most freq resource report
 void ReportGenerator::mostFrequentRsrcReport(){
   cout << "\n==== Most Frequently Request Resources Report ====\n";
-  
+
   map<string, int> resourceCount;
 
   ReservationNode* current = reservationManager->getHead();
@@ -210,7 +265,7 @@ string trim(const string& text){
 
 string toUpper(string text){
     for (size_t i = 0; i < text.length(); i++){
-        text[i] = toupprt(static_cast<unsigned char>(text[i]));
+        text[i] = toupper(static_cast<unsigned char>(text[i]));
     }
     return text;
 }
@@ -237,7 +292,7 @@ string readLin(const string& prompt){
     string line;
 
     //end of file, nothing left to read
-    if (!getLin(cin, line)){
+    if (!getLine(cin, line)){
         cout << "\nInput closed. Goodbye." << endl;
         exit(0);
     }
@@ -248,7 +303,7 @@ string readLin(const string& prompt){
 //continues prompting until something is typed
 string readNotEmpty(const string& prompt){
     while (true){
-        string line = readlin(prompt);
+        string line = readLin(prompt);
 
         if (!line.empty()){
             return line;
@@ -259,21 +314,26 @@ string readNotEmpty(const string& prompt){
 }
 
 //continues prompting for whole num from min to max is typed
-int readInt(const string& prompt){
+int readInt(const string& prompt, int min, int max){
     while(true){
-        string ans = toUpper(readLin(prompt));
+       int value;
 
-        if (ans == "Y" || ans == "YES"){
-            return true;
-        }
+       if (parseInt(readLin(prompt), value) && value >= min && value <= max){
+        return value;
+       }
 
-        if (ans == "N" || ans == "NO"){
-            return false;
-        }
-
-        cout << "Please enter y or n" << endl;
+       cout << "Invalid input. Enter a whole number from " <<min << " to " << max << "." << endl;
     }
 }
+
+bool readYN(const string& prompt){
+    while(true){
+        string ans = toUpper(readLin(prompt));
+    }
+}
+
+//validation help
+
 
 
 //menu display
