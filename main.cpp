@@ -11,8 +11,9 @@
 #include <string>  
 #include <stack>
 #include <map>
-#include <cctpye>
-#include <stdlib>
+#include <cctype>
+#include <cstdlib>
+#include <queue>
 
 using namespace std;
 
@@ -57,7 +58,7 @@ string getRequestDate() const;
   void display() const;
 
   // Operator overload that compares the entries
-   bool operator==(const WaitingList& other) const;  // Compare entries
+   bool operator==(const waitingList& other) const;  // Compare entries
 };
 
 WaitingList::WaitingList(const string& stuID, const string& studName, const string& resID, const string& date){

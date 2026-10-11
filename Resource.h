@@ -15,18 +15,18 @@ private:
 
 public:
 //choose our default constructor
-    Resource();
+    Resource::Resource(){
+          
       //Everything held under resource
-    Resource(const string& id, const string& name, const string& type, bool available);
+    Resource(const string& id, const string& name, const string& type, const bool available);
 
     //we need to get all the accessors above 
-    string getResourceID() const;
-
-
+    string getResourceID() const; 
+           
     string getResourceName() const;
-
+           
     string getResourceType() const;
-
+           
     bool getIsAvailable() const;
 
     //Setter methods for above  accessors
@@ -35,7 +35,7 @@ public:
 
     void setResourceType(const string& type);
 
-    void setAvaialble(bool available);
+    void setAvailable(bool available);
 
     void display() const;
     

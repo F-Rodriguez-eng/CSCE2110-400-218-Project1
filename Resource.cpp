@@ -2,27 +2,30 @@
 #include <vector>
 //Open with a default constuctor
 Resource::Resource()
-
+           resourceID = "";
+           resourceName = "";
+           resourceType = "";
+           isAvailable = true;
 
 //This is an overloaded constructor with all the four accessors
 Resource::Resource(const string& id, const string& name, const string& type, bool available)
 {}
 //lets initialize the variables above
-     : resourceID(id), 
-       resourceName(name), 
-       resourceType(type), 
+     : resourceID(id); 
+       resourceName(name); 
+       resourceType(type); 
        isAvailable(available);
 {}
 
 //After this we need to have a return for all of the above
 //The getters allows some of the parts to access private variables
-string& Resource::getResourceID() const{
+string Resource::getResourceID() const{
     return resourceID;
 }
-string& Resource::getResourceName() const{
+string Resource::getResourceName() const{
     return resourceName;
 }
-string& Resource::getResourceType() const{
+string Resource::getResourceType() const{
     return resourceType;
 }
 bool Resource::getIsAvailable(){
