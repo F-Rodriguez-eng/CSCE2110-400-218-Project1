@@ -2,15 +2,18 @@
 #include <vector>
 //Open with a default constuctor
 Resource::Resource()
-
+           resourceID = "";
+           resourceName = "";
+           resourceType = "";
+           isAvailable = true;
 
 //This is an overloaded constructor with all the four accessors
 Resource::Resource(const string& id, const string& name, const string& type, bool available)
 {}
 //lets initialize the variables above
-     : resourceID(id), 
-       resourceName(name), 
-       resourceType(type), 
+     : resourceID(id); 
+       resourceName(name); 
+       resourceType(type); 
        isAvailable(available);
 {}
 
