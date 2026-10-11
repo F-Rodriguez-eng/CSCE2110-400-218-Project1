@@ -1,4 +1,4 @@
-#include ReservationManagement.h
+#include "ReservationManagement.h"
 #include <iostream>
 
 //default constructor, inits linked list by setting head ptr to nullptr, meaning no active reservations
@@ -37,7 +37,7 @@ ReservationNode* ReservationManager::getHead() const{
 //creates Reservation
 void ReservationManager::createReserv(Reservation r){
   //create new node containing reservation
-  ReservationNode newNode = new ReservationNode(r);
+  ReservationNode* newNode = new ReservationNode(r);
 
   //insert node infront of list
   newNode->next = head;
@@ -102,7 +102,7 @@ bool ReservationManager::cancelReserv(int reservationID){
       cancelHistory.push(current->data);
 
       //remove first node
-      if (previous->next = current->next){
+      if (previous->next == nullptr){
         head = current->next;
       }
 
@@ -119,11 +119,11 @@ bool ReservationManager::cancelReserv(int reservationID){
     }
 
     previous = current;
-    current = current->next
+    current = current->next;
   }
 
   //chosen reservation not found
-  return false
+  return false;
 }
 
 //adding reservation request to wait list queue
@@ -144,7 +144,7 @@ void ReservationManager::processWaitList(){
   Reservation nextReservation = waitList.front();
 
   //remove from queue
-  waitList.pop()
+  waitList.pop();
 
   //add to active reservations list
   createReservation(nextReservation);
