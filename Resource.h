@@ -5,7 +5,7 @@
 using namespace std;
 
 //This resource class contains infmation resource ID, name, type and availability status.
-class Resource;
+class Resource
 {
 private:
        string resourceID;   //Id of the student
@@ -15,19 +15,27 @@ private:
 
 public:
 //choose our default constructor
-    Resource();
+    Resource::Resource(){
+           resourceID = "";
+           resourceName = "";
+           resourceType = "";
+           isAvailable = true;
       //Everything held under resource
-    Resource(const string& id, const string& name, const string& type, bool available);
+    Resource(const string& id, const string& name, const string& type, const bool available);
 
     //we need to get all the accessors above 
-    string getResourceID() const;
-
-
-    string getResourceName() const;
-
-    string getResourceType() const;
-
-    bool getIsAvailable() const;
+    string getResourceID() const {
+           return resourceID;
+    }
+    string getResourceName() const {
+           return resourceName;
+    }
+    string getResourceType() const {
+           return resourceType;
+    }
+    bool getIsAvailable() const {
+           return isAvailable;
+    }
 
     //Setter methods for above  accessors
     //Mutators
@@ -35,7 +43,7 @@ public:
 
     void setResourceType(const string& type);
 
-    void setAvaialble(bool available);
+    void setAvailable(bool available);
 
     void display() const;
     
