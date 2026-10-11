@@ -24,15 +24,17 @@ public:
         const std::string& studentName,
         const std::string& resourceID,
         const std::string& reservationDate,
-        const std::string& date,
+    //  const std::string& date,
         const std::string& startTime,
         const std::string& endTime
     );
 
 int getReservationID() const;
     std::string getStudentID() const;
+    std::string getStudentName() const;
     std::string getResourceID() const;
-    std::string getDate() const;
+//  std::string getDate() const;
+    std::string getReservationDate() const;
     std::string getStartTime() const;
     std::string getEndTime() const;
 

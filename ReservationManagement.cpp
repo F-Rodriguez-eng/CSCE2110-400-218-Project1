@@ -102,7 +102,7 @@ bool ReservationManager::cancelReserv(int reservationID){
       cancelHistory.push(current->data);
 
       //remove first node
-      if (previous->next == nullptr){
+      if (previous == nullptr){
         head = current->next;
       }
 

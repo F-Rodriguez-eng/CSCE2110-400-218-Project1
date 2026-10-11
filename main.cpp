@@ -330,27 +330,63 @@ int readInt(const string& prompt, int min, int max){
 bool readYN(const string& prompt){
     while(true){
         string ans = toUpper(readLin(prompt));
-    }
 
-    if (ans == "Y" || ans == "YES"){
-        return true;
-    }
+        if (ans == "Y" || ans == "YES"){
+            return true;
+        }
 
-    if (ans == "N" || ans == "NO"){
-        return false;
-    }
+        if (ans == "N" || ans == "NO"){
+            return false;
+        }
 
-    cout << "Enter y or n: ";
+        cout << "Enter y or n: ";
+    }
+}
+
+//menu display
+void displayMenu(){
+    cout << "\n---- Campus Resource Reservation System ----" << endl;
+    cout << "1. View Resources" << endl;
+    cout << "2. View Resources" << endl;
+    cout << "3. Cancel Reservation" << endl;
+    cout << "4. View Waiting Lists" << endl;
+    cout << "5. Undo Cancellation" << endl;
+    cout << "6. Search Reservations" << endl;
+    cout << "7. Sort Resources" << endl;
+    cout << "8. Generate Report" << endl;
+    cout << "0. Exit" << endl;
+    cout << "Enter Choice: ";
+}
+
+void displayResources(const vector<Resource>& resources){
+    cout << "\n---- Resources ----\n";
+
+    for (const Resource& resource : resources){
+        cout << resource << endl;   
+    }
+}
+
+void createReserv(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList){
+    cout << "\n---- Create Reservation ----\n";
+}
+
+void cancelReservation(ReservationManager& manager){
+    cout << "\n---- Cancel Reservation ----\n";
+
+    int reservationID = readInt("Reservation ID to cancel: ", 1, MAX_RESERVID);
+
+    if (!manager.cancelReserv(reservationID)){
+        cout << "No active reservation matches ID " << reservationID << "." << endl;
+    }
 }
 
 
-
-void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
+void displayWaitingLists(queue<WaitingList>& waitingList, const vector<Resource>& resources){
     cout << "\n---- Waiting List ----\n";
 }
 
 
-void undoCanecellation(ReservationManager& manager){
+void undoCancellation(ReservationManager& manager){
     cout << "\n---- Undo Cancellation ----\n";
 
     manager.undoCancel();
@@ -362,7 +398,7 @@ void displayCancelHistory(){
     //implement
 }
 
-void searchResources(const vector<Resource>& resources){
+void searchReservation(ReservationManager& manager){
     cout << "\n---- Search Reservations ----\n";
 
     int reservationID = readInt("Reservation ID: ", 1, MAX_RESERVID);
@@ -406,11 +442,11 @@ int main(){
     //catching non-int characters
     if(cin.fail()){
         cin.clear();
-        choice = 0;
+        choice = -1;
     }
 
     //throw rest of lineto help later getline call
-    cin.ignore(100, 'n');
+    cin.ignore(100, '\n');
 
     //we will use the switch statement to check the user's statement and call the right function
     //we will call all the functions on the display menu as cases
@@ -422,7 +458,7 @@ int main(){
         
     //create a reservation for a student and add to the waiting list if not available
         case 2:
-        createReservation(manager, resource, WaitingList);
+        createReservation(manager, resources, waitingList);
         break;
     //Case 3 cancels an existing reservation and placing it on the cancellationhistory
         case 3:
@@ -430,7 +466,7 @@ int main(){
         break;
     //disaplay waiting list
         case 4:
-        displayWaitingLists(WaitingList, resources);
+        displayWaitingLists(waitingList, resources);
         break;
     //Show the recent cancelled reservation
         case 5:
@@ -452,7 +488,7 @@ int main(){
     
         
         default:
-        cout << "Choice invalid. Enter 1-8 or 0 to exit.";
+        cout << "Choice invalid. Enter 1-8 or 0 to exit." << endl;
     }
     }  while(choice != 0);
 

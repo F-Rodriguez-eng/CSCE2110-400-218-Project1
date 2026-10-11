@@ -1,19 +1,17 @@
 #include "Resource.h"
 #include <vector>
 //Open with a default constuctor
-Resource::Resource()
+Resource::Resource(){
            resourceID = "";
            resourceName = "";
            resourceType = "";
            isAvailable = true;
+}
 
 //This is an overloaded constructor with all the four accessors
 Resource::Resource(const string& id, const string& name, const string& type, bool available){
 //lets initialize the variables above
-     : resourceID(id), 
-       resourceName(name), 
-       resourceType(type), 
-       isAvailable(available);
+     : resourceID(id), resourceName(name), resourceType(type), isAvailable(available);
 }
 
 //After this we need to have a return for all of the above
@@ -40,7 +38,7 @@ void Resource::setResourceType(const string& type)
 {
     resourceType = type;
 }
-void Resource::setAvailable(const bool available)
+void Resource::setIsAvailable(const bool available)
 {
     isAvailable = available;
 }
