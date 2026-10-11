@@ -5,7 +5,7 @@
 using namespace std;
 
 //This resource class contains infmation resource ID, name, type and availability status.
-class Resource
+class Resource;
 {
 private:
        string resourceID;   //Id of the student
