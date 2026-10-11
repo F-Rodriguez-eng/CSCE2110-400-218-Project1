@@ -147,7 +147,7 @@ void ReservationManager::processWaitList(){
   waitList.pop();
 
   //add to active reservations list
-  createReservation(nextReservation);
+  createReserv(nextReservation);
 
   cout << "Next waiting reservation now in list." << endl;
 }
@@ -187,7 +187,7 @@ void ReservationManager::undoCancel(){
 
   //insert cancelled reservation into active reservation
   restored.restore();
-  createReservation(restored);
+  createReserv(restored);
 
   cout << "Cancelled reservation has been retrieved, reservation now active." << endl; 
   

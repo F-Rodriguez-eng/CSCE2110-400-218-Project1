@@ -8,14 +8,13 @@ Resource::Resource()
            isAvailable = true;
 
 //This is an overloaded constructor with all the four accessors
-Resource::Resource(const string& id, const string& name, const string& type, bool available)
-{}
+Resource::Resource(const string& id, const string& name, const string& type, bool available){
 //lets initialize the variables above
-     : resourceID(id); 
-       resourceName(name); 
-       resourceType(type); 
+     : resourceID(id), 
+       resourceName(name), 
+       resourceType(type), 
        isAvailable(available);
-{}
+}
 
 //After this we need to have a return for all of the above
 //The getters allows some of the parts to access private variables
@@ -28,7 +27,7 @@ string Resource::getResourceName() const{
 string Resource::getResourceType() const{
     return resourceType;
 }
-bool Resource::getIsAvailable(){
+bool Resource::getIsAvailable() const{
     return isAvailable;
 }
 //void allows us to change whats inside the function
@@ -41,7 +40,7 @@ void Resource::setResourceType(const string& type)
 {
     resourceType = type;
 }
-void Resource::setAvailable(bool available)
+void Resource::setAvailable(const bool available)
 {
     isAvailable = available;
 }
@@ -70,41 +69,45 @@ os << "ID: "<< resource.resourceID
 
 return os;
 }
+
 //This operator compares two resources two see if us the same ID
-bool Resource::operator==(const Resource& other) const
-{
+bool Resource::operator==(const Resource& other) const{
     if(resourceID == other.resourceID){
         return true;
     }
     else{
         return false;
     }
-bool Resource::operator<(const Resource& other) const
-{
+}
+
+bool Resource::operator<(const Resource& other) const{
     if(resourceID < other.resourceID){
         return true;
     }
     else{
         return false;
     }
- bool Resource::operator>(const Resource& other) const
+}
+
+bool Resource::operator>(const Resource& other) const
 {
     if(resourceID > other.resourceID){
         return true;
     }
-    else{
+    else {
         return false;
     }       
+}
 string Resource::toString() const {
-string status;
+    string status;
            
-if(isAvailable){
-   status = "Available";
-}
-else{
-  status = "Unavailable";
-}
+    if(isAvailable){
+        status = "Available";
+    }
+    else{
+        status = "Unavailable";
+    }
+
 return resourceID + " | " + resourceName + " | " + resourceType + " | " + status;
            
-}
 }

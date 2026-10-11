@@ -60,7 +60,7 @@ class ReservationManager{
     void viewReservations();
 
     //adds reservation request to wait list queue
-    void addToWaitList();
+    void addToWaitList(Reservation r);
 
     //processes next reservation in wait list queue
     void processWaitList();
