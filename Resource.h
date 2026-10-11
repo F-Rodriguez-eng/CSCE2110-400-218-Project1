@@ -24,18 +24,13 @@ public:
     Resource(const string& id, const string& name, const string& type, const bool available);
 
     //we need to get all the accessors above 
-    string getResourceID() const {
-           return resourceID;
-    }
-    string getResourceName() const {
-           return resourceName;
-    }
-    string getResourceType() const {
-           return resourceType;
-    }
-    bool getIsAvailable() const {
-           return isAvailable;
-    }
+    string getResourceID() const; 
+           
+    string getResourceName() const;
+           
+    string getResourceType() const;
+           
+    bool getIsAvailable() const;
 
     //Setter methods for above  accessors
     //Mutators
