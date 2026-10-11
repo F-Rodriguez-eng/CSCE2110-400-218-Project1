@@ -452,7 +452,7 @@ int main(){
     
         
         default:
-        cout << "Choice invalid. Enter 1-8 or 0 to exit."
+        cout << "Choice invalid. Enter 1-8 or 0 to exit.";
     }
     }  while(choice != 0);
 
