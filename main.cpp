@@ -339,22 +339,66 @@ bool readYN(const string& prompt){
 
 //menu display
 void displayMenu(){
-  cout << "\n===== Campus Resource Reservation System =====" << endl;
-  cout << "1. View Resources" << endl;
-  cout << "2. Create Reservation" << endl;
-  cout << "3. Cancel Reservation" << endl;
-  cout << "4. View Waiting Lists" << endl;
-  cout << "5. Undo Cancellation" << endl;
-  cout << "6. Search Reservations" << endl;
-  cout << "7. Sort Resources" << endl;
-  cout << "8. Generate Report" << endl;
-  cout << "0. Exit" << endl;
-  cout << "Enter Choice: ";
+    cout << "\n===== Campus Resource Reservation System =====" << endl;
+    cout << "1. View Resources" << endl;
+    cout << "2. Create Reservation" << endl;
+    cout << "3. Cancel Reservation" << endl;
+    cout << "4. View Waiting Lists" << endl;
+    cout << "5. Undo Cancellation" << endl;
+    cout << "6. Search Reservations" << endl;
+    cout << "7. Sort Resources" << endl;
+    cout << "8. Generate Report" << endl;
+    cout << "0. Exit" << endl;
+    cout << "Enter Choice: ";
 
-  int choice();
-  do {
+
+
+    void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
+    cout << "\n---- Waiting List ----\n";
+}
+
+
+void //undoCancellation
+
+
+void //displayCancelHistory
+
+
+void //searchReservation
+
+
+void //sortResources
+
+void generateReport(ReportGenerator& reports){
+    reports.availabilityReport();
+    reports.activeReservationReport();
+    reports.waitListReport();
+    reports.mostFrequentRsrcReport();
+}
+
+
+int main(){
+
+    vector<Resource> resources;
+    ReservationManager manager;
+    queue<WaitingList> waitingList;
+
+    ReportGenerator reports(&manager, &resources, &waitingList);    
+
+    int choice = 0;
+    do {
     displayMenu();
-    cin >>choice;
+    cin >> choice;
+
+    //catching non-int characters
+    if(cin.fail()){
+        cin.clear();
+        choice = 0;
+    }
+
+    //throw rest of lineto help later getline call
+    cin.ignore(100, 'n');
+
     //we will use the switch statement to check the user's statement and call the right function
     //we will call all the functions on the display menu as cases
     switch (choice){
@@ -392,32 +436,12 @@ void displayMenu(){
         case 8:
         generateReport();
         break;
+    
         
+        default:
+        cout << "Choice invalid. Enter 1-8 or 0 to exit."
     }
-  }  while(choice != 0);
-  return 0;
-  
-}
+    }  while(choice != 0);
+    return 0;
 
-void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
-    cout << "\n---- Waiting List ----\n";
-}
-
-
-void //undoCancellation
-
-
-void //displayCancelHistory
-
-
-void //searchReservation
-
-
-void //sortResources
-
-void generateReport(ReportGenerator& reports){
-    reports.availabilityReport();
-    reports.activeReservationReport();
-    reports.waitListReport();
-    reports.mostFrequentRsrcReport();
 }
