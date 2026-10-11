@@ -370,6 +370,7 @@ void displayMenu(){
     //disaplay waiting list
         case 4:
         displayWaitingLists();
+        break;
     //Show the recent cancelled reservation
         case 5:
         undoCancellation();
