@@ -399,4 +399,25 @@ void displayMenu(){
   
 }
 
+void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
+    cout << "\n---- Waiting List ----\n";
+}
 
+
+void //undoCancellation
+
+
+void //displayCancelHistory
+
+
+void //searchReservation
+
+
+void //sortResources
+
+void generateReport(ReportGenerator& reports){
+    reports.availabilityReport();
+    reports.activeReservationReport();
+    reports.waitListReport();
+    reports.mostFrequentRsrcReport();
+}
