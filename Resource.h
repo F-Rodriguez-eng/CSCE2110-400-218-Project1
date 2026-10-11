@@ -16,10 +16,7 @@ private:
 public:
 //choose our default constructor
     Resource::Resource(){
-           resourceID = "";
-           resourceName = "";
-           resourceType = "";
-           isAvailable = true;
+          
       //Everything held under resource
     Resource(const string& id, const string& name, const string& type, const bool available);
 
