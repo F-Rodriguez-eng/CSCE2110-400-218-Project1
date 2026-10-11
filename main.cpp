@@ -348,9 +348,13 @@ void displayMenu(){
   cout << "6. Search Reservations" << endl;
   cout << "7. Sort Resources" << endl;
   cout << "8. Generate Report" << endl;
-  cout << "9. Exit" << endl;
+  cout << "0. Exit" << endl;
   cout << "Enter Choice: ";
 
+  int choice();
+  do {
+    displayMenu();
+    cin >>choice;
     //we will use the switch statement to check the user's statement and call the right function
     //we will call all the functions on the display menu as cases
     switch (choice){
@@ -388,8 +392,10 @@ void displayMenu(){
         case 8:
         generateReport();
         break;
+        
     }
-       
+  }  while(choice != 0);
+  return 0;
   
 }
 
