@@ -337,83 +337,66 @@ bool readYN(const string& prompt){
 
 
 
+//menu display
+void displayMenu(){
+  cout << "\n===== Campus Resource Reservation System =====" << endl;
+  cout << "1. View Resources" << endl;
+  cout << "2. Create Reservation" << endl;
+  cout << "3. Cancel Reservation" << endl;
+  cout << "4. View Waiting Lists" << endl;
+  cout << "5. Undo Cancellation" << endl;
+  cout << "6. Search Reservations" << endl;
+  cout << "7. Sort Resources" << endl;
+  cout << "8. Generate Report" << endl;
+  cout << "0. Exit" << endl;
+  cout << "Enter Choice: ";
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//menu functions and display
-/*
-example:
-void display*functionName*(functionReference& fVariable){
-    cout << "\n---- function action ----\n";
-//any aditional functions needed
-    manager.viewReservations
-}
-
-*/
-
-void //displayResources
-
-void //displayAvailability
-
-void createReserv(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& waitingList){
-    cout << "\n---- Create Reservation ----\n";
-}
-
-void cancelReserv(ReservationManager& manager){
-    cout << "\n---- Cancel Reservation ----\n";
+  int choice();
+  do {
+    displayMenu();
+    cin >>choice;
+    //we will use the switch statement to check the user's statement and call the right function
+    //we will call all the functions on the display menu as cases
+    switch (choice){
+    //for the first case, we will call all the campus resources
+        case 1:
+        displayResources();
+        break;
+        
+    //create a reservation for a student and add to the waiting list if not available
+        case 2:
+        createReservation();
+        break;
+    //Case 3 cancels an existing reservation and placing it on the cancellationhistory
+        case 3:
+        cancelReservation();
+        break;
+    //disaplay waiting list
+        case 4:
+        displayWaitingLists();
+        break;
+    //Show the recent cancelled reservation
+        case 5:
+        undoCancellation();
+        break;
+    //search for reservation 
+        case 6:
+        searchReservation();
+        break;
+    //Sorts all resources    
+        case 7:
+        sortResources();
+        break;
+        
+    //gives reports on most elements above  
+        case 8:
+        generateReport();
+        break;
+        
+    }
+  }  while(choice != 0);
+  return 0;
+  
 }
 
 void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
