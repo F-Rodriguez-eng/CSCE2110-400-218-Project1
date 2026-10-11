@@ -79,5 +79,32 @@ bool Resource::operator==(const Resource& other) const
     else{
         return false;
     }
-    
+bool Resource::operator<(const Resource& other) const
+{
+    if(resourceID < other.resourceID){
+        return true;
+    }
+    else{
+        return false;
+    }
+ bool Resource::operator>(const Resource& other) const
+{
+    if(resourceID > other.resourceID){
+        return true;
+    }
+    else{
+        return false;
+    }       
+string Resource::toString() const {
+string status;
+           
+if(isAvailable){
+   status = "Available";
+}
+else{
+  status = "Unavailable";
+}
+return resourceID + " | " + resourceName + " | " + resourceType + " | " + status;
+           
+}
 }
