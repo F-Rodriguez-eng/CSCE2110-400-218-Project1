@@ -174,7 +174,7 @@ class ReportGenerator{
 ReportGenerator::ReportGenerator(ReservationManager* rm, vector<Resource>* resources, queue<WaitingList>* waitingList){
     reservationManager = rm;
     this->resources = resources;
-    this->WaitingList = waitingList;
+    this->waitingList = waitingList;
 }
 
 //Availability resport
@@ -332,7 +332,7 @@ bool readYN(const string& prompt){
         string ans = toUpper(readLin(prompt));
     }
 
-    if (ans == "Y" || ans "YES"){
+    if (ans == "Y" || ans == "YES"){
         return true;
     }
 
