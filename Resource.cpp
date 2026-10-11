@@ -16,13 +16,13 @@ Resource::Resource(const string& id, const string& name, const string& type, boo
 
 //After this we need to have a return for all of the above
 //The getters allows some of the parts to access private variables
-string& Resource::getResourceID() const{
+string Resource::getResourceID() const{
     return resourceID;
 }
-string& Resource::getResourceName() const{
+string Resource::getResourceName() const{
     return resourceName;
 }
-string& Resource::getResourceType() const{
+string Resource::getResourceType() const{
     return resourceType;
 }
 bool Resource::getIsAvailable(){
