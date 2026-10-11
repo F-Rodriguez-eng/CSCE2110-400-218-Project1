@@ -3,7 +3,7 @@
 //#include Reservation.cpp //headers only
 #include "Reservation.h"
 //#include ReservationManagement.cpp
-#include "ReservationMnagement.h"
+#include "ReservationManagement.h"
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -58,7 +58,7 @@ string getRequestDate() const;
   void display() const;
 
   // Operator overload that compares the entries
-   bool operator==(const waitingList& other) const;  // Compare entries
+   bool operator==(const WaitingList& other) const;  // Compare entries
 };
 
 WaitingList::WaitingList(const string& stuID, const string& studName, const string& resID, const string& date){
@@ -69,19 +69,19 @@ WaitingList::WaitingList(const string& stuID, const string& studName, const stri
     entryposition = 0;
 }
 
-string Waitinglist::getStudentID() const{
+string WaitingList::getStudentID() const{
     return studentID;
 }
 
-string Waitinglist::getStudentName() const{
+string WaitingList::getStudentName() const{
     return studentName;
 }
 
-string Waitinglist::getResourceID() const{
+string WaitingList::getResourceID() const{
     return resourceID;
 }
 
-string Waitinglist::getRequestDate() const{
+string WaitingList::getRequestDate() const{
     return requestDate;
 }
 
@@ -102,7 +102,7 @@ void WaitingList::display() const{
 }
 
 bool WaitingList::operator==(const WaitingList& rhs) const{
-    return studentID == rhs.studentID && resourceID == rhs.studentID && requestDate == rhs.requestDate;
+    return studentID == rhs.studentID && resourceID == rhs.resourceID && requestDate == rhs.requestDate;
 }
 
 //CANCELATION
@@ -154,7 +154,7 @@ class ReportGenerator{
   private:
     ReservationManager* reservationManager;
     vector<Resource>* resources;
-    queue<WaitingList>* WaitingList;
+    queue<WaitingList>* waitingList;
 
     public:
     //Initializing object
@@ -293,7 +293,7 @@ string readLin(const string& prompt){
     string line;
 
     //end of file, nothing left to read
-    if (!getLine(cin, line)){
+    if (!getline(cin, line)){
         cout << "\nInput closed. Goodbye." << endl;
         exit(0);
     }
@@ -331,43 +331,56 @@ bool readYN(const string& prompt){
     while(true){
         string ans = toUpper(readLin(prompt));
     }
+
+    if (ans == "Y" || ans "YES"){
+        return true;
+    }
+
+    if (ans == "N" || ans == "NO"){
+        return false;
+    }
+
+    cout << "Enter y or n: ";
 }
 
-//validation help
 
 
-
-//menu display
-void displayMenu(){
-    cout << "\n===== Campus Resource Reservation System =====" << endl;
-    cout << "1. View Resources" << endl;
-    cout << "2. Create Reservation" << endl;
-    cout << "3. Cancel Reservation" << endl;
-    cout << "4. View Waiting Lists" << endl;
-    cout << "5. Undo Cancellation" << endl;
-    cout << "6. Search Reservations" << endl;
-    cout << "7. Sort Resources" << endl;
-    cout << "8. Generate Report" << endl;
-    cout << "0. Exit" << endl;
-    cout << "Enter Choice: ";
-
-
-
-    void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
+void displayWaitingList(queue<WaitingList>& waitingList, const vector<Resource>& resources){
     cout << "\n---- Waiting List ----\n";
 }
 
 
-void //undoCancellation
+void undoCanecellation(ReservationManager& manager){
+    cout << "\n---- Undo Cancellation ----\n";
+
+    manager.undoCancel();
+}
 
 
-void //displayCancelHistory
+void displayCancelHistory(){
+    cout << "\n---- Cancellation History ----\n";
+    //implement
+}
+
+void searchResources(const vector<Resource>& resources){
+    cout << "\n---- Search Reservations ----\n";
+
+    int reservationID = readInt("Reservation ID: ", 1, MAX_RESERVID);
+    Reservation* found = manager.searchReserv(reservationID);
+
+    if(found == nullptr){
+        cout << "No active reservation with ID " << reservationID << "." << endl;
+        return;
+    }
+
+    found->display();
+}
 
 
-void //searchReservation
-
-
-void //sortResources
+void sortResources(const vector<Resource>& resources){
+    cout << "\n---- Sort Resources ----\n";
+    //implement
+}
 
 void generateReport(ReportGenerator& reports){
     reports.availabilityReport();
@@ -404,37 +417,37 @@ int main(){
     switch (choice){
     //for the first case, we will call all the campus resources
         case 1:
-        displayResources();
+        displayResources(resources);
         break;
         
     //create a reservation for a student and add to the waiting list if not available
         case 2:
-        createReservation();
+        createReservation(manager, resource, WaitingList);
         break;
     //Case 3 cancels an existing reservation and placing it on the cancellationhistory
         case 3:
-        cancelReservation();
+        cancelReservation(manager);
         break;
     //disaplay waiting list
         case 4:
-        displayWaitingLists();
+        displayWaitingLists(WaitingList, resources);
         break;
     //Show the recent cancelled reservation
         case 5:
-        undoCancellation();
+        undoCancellation(manager);
         break;
     //search for reservation 
         case 6:
-        searchReservation();
+        searchReservation(manager);
         break;
     //Sorts all resources    
         case 7:
-        sortResources();
+        sortResources(resources);
         break;
         
     //gives reports on most elements above  
         case 8:
-        generateReport();
+        generateReport(reports);
         break;
     
         
@@ -442,6 +455,6 @@ int main(){
         cout << "Choice invalid. Enter 1-8 or 0 to exit."
     }
     }  while(choice != 0);
-    return 0;
 
+    return 0;
 }
