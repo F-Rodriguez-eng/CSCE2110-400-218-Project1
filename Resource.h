@@ -15,7 +15,7 @@ private:
 
 public:
 //choose our default constructor
-    Resource::Resource(){
+    Resource();
           
       //Everything held under resource
     Resource(const string& id, const string& name, const string& type, const bool available);
@@ -35,7 +35,7 @@ public:
 
     void setResourceType(const string& type);
 
-    void setAvailable(bool available);
+    void setIsAvailable(const bool available);
 
     void display() const;
     
