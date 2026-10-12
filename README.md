@@ -42,15 +42,15 @@ Features Implemented
   - Menu-based command-line system
  
 Files in the project
--main.cpp-has the main menu and body of the project
--ReservationManager.cpp-Declares the classes used in the reservation manager
--ReservationManager.cpp-implements the functions in reservation manager
--Resource.h-Shows the resource classes
--Resource.cpp-implements the resource class functions
--Reservation.h-declares its classes and its function
-Reservation.cpp-implements the reservation classes.
-resource.txt-stores campus resource information
-README.md-explains the whole body of the project
+ -main.cpp-has the main menu and body of the project
+ -ReservationManager.cpp-Declares the classes used in the reservation manager
+ -ReservationManager.cpp-implements the functions in reservation manager
+ -Resource.h-Shows the resource classes
+ -Resource.cpp-implements the resource class functions
+ -Reservation.h-declares its classes and its function
+ -Reservation.cpp-implements the reservation classes.
+ -resource.txt-stores campus resource information
+ -README.md-explains the whole body of the project
 
 How the program works
 The user enters a number from from 1 to 9 to make a selection. This continues until the user enters 0 and it exists the program.
