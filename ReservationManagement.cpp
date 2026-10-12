@@ -58,13 +58,18 @@ void ReservationManager::viewReservations(){
 
   ReservationNode* current = head;
 
+  cout << "ReservationID | StudentID | Name | ResourceID | Date" <<endl;
+
   //traverse linked list
   while (current != nullptr){
 
     //display reservation info
-    current -> data.display();
+    cout << current->data.getReservationID() << " | "
+         << current->data.getStudentID() << " | "
+         << current->data.getStudentName() << " | "
+         << current->data.getResourceID() << " | "
+         << current->data.getReservationDate() << endl;
 
-    cout << "********************" << endl;
 
     current = current->next;
   }
@@ -110,7 +115,7 @@ bool ReservationManager::cancelReserv(int reservationID){
     if (current->data.getReservationID() == reservationID){
 
       //mark as cancelled and save reserve to stack
-      cuurent->data.cancel();
+      current->data.cancel();
       cancelHistory.push(current->data);
 
       //remove first node
@@ -199,7 +204,7 @@ void ReservationManager::undoCancel(){
 
   //insert cancelled reservation into active reservation
   restored.restore();
-  createReserv(restored);
+  createReserv(restored, false);
 
   cout << "Cancelled reservation has been retrieved, reservation now active." << endl; 
 

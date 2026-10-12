@@ -8,7 +8,7 @@
 #include <fstream>
 #include <sstream>
 #include <vector>
-#include <string>  
+#include <string>
 #include <stack>
 #include <map>
 #include <cctype>
@@ -50,8 +50,8 @@ string getResourceID() const;
 string getRequestDate() const;
  // Returns position in queue
  int getEntryPosition() const;
-    
-    
+
+
   // Setters
   //This sets the position in the queue
   void setEntryPosition(int pos);
@@ -96,7 +96,7 @@ void WaitingList::setEntryPosition(int pos){
 }
 
 void WaitingList::display() const{
-    cout << "Position " << entryposition << endl << 
+    cout << "Position " << entryposition << endl <<
     "Student ID: " << studentID << endl <<
     "Name: " << studentName << endl <<
     "Resource: " << resourceID << endl <<
@@ -132,7 +132,7 @@ public:
     void pop() {
         if (!cancelHistory.empty()) {
             cancelHistory.pop();
-        } // removes most recently canceled 
+        } // removes most recently canceled
     }
 
     void displayHistory() const {
@@ -347,6 +347,7 @@ bool readYN(const string& prompt){
 
 //validation helpers
 
+//accepting mm/dd/yyyy
 bool isValidDate(const string& date){
     //checking indeces for proper format
     if(date.length() != 10 || date[2] != '/' || date[5] != '/'){
@@ -387,20 +388,22 @@ string readDate(const string& prompt){
     }
 }
 
+//file reading
+
 //splitting infile format from "a||b|c" into {"a", "b", ...}
 vector<string> splitLine(const string& line, char delimit){
     vector<string> fields;
-    stringstream strstrm(line)
+    stringstream strstrm(line);
     string field;
 
     while(getline(strstrm, field, delimit)){
-        field.push_back(trim(field));
+        fields.push_back(trim(field));
     }
 
     return fields;
 }
 
-//
+//file format: ID|Name|Type|Available or UnAvail
 void loadResources(const string& filename, vector<Resource>& resources){
     ifstream inFile(filename);
 
@@ -412,12 +415,11 @@ void loadResources(const string& filename, vector<Resource>& resources){
     string line;
     int lineNumber = 0;
 
-    while(getline(inFile, line))
-    {
+    while(getline(inFile, line)){
         lineNumber++;
         line = trim(line);
 
-        //skip blanks
+        //skip blank lines
         if(line.empty()){
             continue;
         }
@@ -436,8 +438,83 @@ void loadResources(const string& filename, vector<Resource>& resources){
             continue;
         }
         
-    }
+        resources.push_back(Resource(toUpper(fields[0]), fields[1], fields[2], status == "AVAILABLE"));
     
+    }
+
+    inFile.close();
+
+    cout << "Loaded " << resources.size() << " resources from " << filename << "." << endl;
+
+}
+
+int loadReservations(const string& filename, ReservationManager& manager, const vector<Resource>& resources){
+    ifstream inFile(filename);
+    int highestID = 0;
+
+    if(!inFile){
+        cout << "Could not open " << filename << ". Starting with no reservations." << endl;
+        return highestID;
+    }
+
+    string line;
+    int lineNumber = 0;
+    int loadedCount = 0;
+
+    while(getline(inFile, line)){
+        lineNumber++;
+        line = trim(line);
+
+        //skip blank line
+        if(line.empty()){
+            continue;
+        }
+
+        vector<string> fields = splitLine(line, '|');
+
+        if(fields.size() != 5){
+            cout << "Skipped " << filename << "line " << lineNumber << ": expected 5 fields." << endl;
+            continue;
+        }
+
+        int reservationID:
+
+        if(!parseInt(fields[0], reservationID)){
+            cout << "Skipped "<<filename << " line " << lineNumber << ": bad reservation ID" << endl;
+            continue;
+        }
+
+        string resourceID = toUpper(fields[3]);
+
+        //linsearch to ensure resource exits
+        if(manager.linearSearchResource(resources, resourceID) == -1){
+            cout << "Skipped "<< filename << " line " << lineNumber << ": bad resource ID." << endl;
+            continue;
+        }
+
+        if(!isValidDate(fields[4])){
+             cout << "Skipped "<<filename << " line " << lineNumber << ": invalid date." << endl;
+            continue;
+        }
+
+        Reservation reservation(reservationID, fields[1], fields[2], resourceID, fields[4]);
+
+        //createReserv prints 1 message at a time
+        cout.setstate(ios::failbit);
+        manager.createReserv(reservation);
+        cout.clear();
+
+        loadedCount++
+
+        if(reservationID > highestID){
+            highestID = reservationID;
+        }
+    }
+
+    inFile.close();
+
+    cout << "Loaded " << loadedCount << " reservations from " << filename << "." << endl;
+    return highestID;
 }
 
 //menu display
@@ -463,13 +540,13 @@ void displayResources(const vector<Resource>& resources){
     }
 }
 
-void createReservation(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList){
+//prompt to match sample exec
+void createReservation(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList, int& nextreservID){
     cout << "\n---- Create Reservation ----\n";
 
-    string targetID;
-    cout << "Enter Resource ID: ";
-    cin >> targetID;
-    cin.ignore(100, '\n');
+    string studentID = readNotEmpty("Student ID: ");
+    string studentName = readNotEmpty("Student Name: ");
+    string targetID = toUpper(readNotEmpty("Resource ID: "));
 
     //lin search for resource reserved
     int index = manager.linearSearchResource(resources, targetID);
@@ -479,13 +556,51 @@ void createReservation(ReservationManager& manager, const vector<Resource>& reso
         return;
     }
 
-    cout << "Resource found: " << resources[index] << endl;
+    //reservation.txt stores date
+    string date = readDate("Reservation Date (MM/DD/YYYY): ");
 
-    //if unavailable
+    //if unavailable, student goes on waitlist
     if (!resources[index].getIsAvailable()){
         cout << "This resource is currently unavailable." << endl;
+        if (readYN("Join the wait list? (y/n): ")){
+            WaitingList entry(studentID, studentName, targetID, date);
+            entry.setEntryPosition(WaitingList.size()+1);
+            WaitingList.push(entry);
+            cout << studentName << " added to wait list at position " << entry.getEntryPosition() << "." << endl;
+        }
+        
         return;
     }
+
+    //lin search trhrough reserves, resource can be reserved once per date
+    ReservationNode* current = manager.getHead();
+
+    while (current != nullptr){
+        if (current->data.getResourceID() == targetID && current->data.getReservationDate() == date){
+            cout << targetID << " is already reserved on " << date << "." << endl;
+            return;
+        }
+
+        current = current->next;
+
+    //all day reservation
+    Reservation request(nextReservID, studentID, studentName, targetID, date, "00:00", "23:59");
+
+    //validate reservation request
+    if (!request.isValid()){
+        cout << "Reservation request is not valid." << endl;
+        return;
+    }
+
+    manager.createReserv(request);
+
+    cout << nextReservID << " | " << studentID << " | " << studentName << " | "
+         << targetID << " | " << date << endl;
+
+    nextReservID++;
+
+    }
+
 
 }
 
@@ -675,6 +790,9 @@ int main(){
     ReservationManager manager;
     queue<WaitingList> waitingList;
 
+    loadResources(RESOURCE_FILE, resources);
+    int nextReservID = loadReservations(RESERVATION_FILE, manager, resources) + 1;
+
     ReportGenerator reports(&manager, &resources, &waitingList);    
 
     int choice = 0;
@@ -706,7 +824,7 @@ int main(){
         
     //create a reservation for a student and add to the waiting list if not available
         case 2:
-        createReservation(manager, resources, waitingList);
+        createReservation(manager, resources, waitingList, nextReservID);
         break;
     //Case 3 cancels an existing reservation and placing it on the cancellationhistory
         case 3:
