@@ -345,6 +345,101 @@ bool readYN(const string& prompt){
     }
 }
 
+//validation helpers
+
+bool isValidDate(const string& date){
+    //checking indeces for proper format
+    if(date.length() != 10 || date[2] != '/' || date[5] != '/'){
+        return false;
+    }
+
+    for(int i = 0; i < 10; i++){
+        if(i != 2 && i != 5 && !isdigit(date[i])){
+            return false;
+        }
+    }
+
+    int month = (date[0] - '0') * 10 + (date[1] - '0');
+    int day = (date[3] - '0') * 10 + (date[4] - '0');
+    int year = (date[6] - '0') * 1000 + (date[7] - '0') * 100 + (date[8] - '0') * 10 + (date[9] - '0');
+
+    if(month < 1 || month > 12){
+        return false;
+    }
+
+    //ending dates of each month (jan, feb, mar....)
+    int daysInMonth[] = {31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31};
+    int maxDay = daysInMonth[month - 1];
+
+    return day >= 1 && day <= maxDay;
+}
+
+//prompts until valid date typed (mm/dd/yyyy)
+string readDate(const string& prompt){
+    while(true){
+        string date = readNotEmpty(prompt);
+
+        if(isValidDate(date)){
+            return date;
+        }
+
+        cout << "Date is invalid. Date format: MM/DD/YYYY" << endl;
+    }
+}
+
+//splitting infile format from "a||b|c" into {"a", "b", ...}
+vector<string> splitLine(const string& line, char delimit){
+    vector<string> fields;
+    stringstream strstrm(line)
+    string field;
+
+    while(getline(strstrm, field, delimit)){
+        field.push_back(trim(field));
+    }
+
+    return fields;
+}
+
+//
+void loadResources(const string& filename, vector<Resource>& resources){
+    ifstream inFile(filename);
+
+    if(!inFile){
+        cout << "Could not open " << filename << ". Starting without resources." << endl;
+        return;
+    }
+
+    string line;
+    int lineNumber = 0;
+
+    while(getline(inFile, line))
+    {
+        lineNumber++;
+        line = trim(line);
+
+        //skip blanks
+        if(line.empty()){
+            continue;
+        }
+
+        vector<string> fields = splitLine(line, '|');
+
+        if(fields.size() != 4){
+            cout << "Skipped " << filename << " line " << lineNumber << ": expected 4 fields." << endl;
+            continue;
+        }
+
+        string status = toUpper(fields[3]);
+
+        if(status != "AVAILABLE" && status != "UNAVAILABLE"){
+            cout << "Skipped " << filename << " line " << lineNumber << ": unknown status." << endl;
+            continue;
+        }
+        
+    }
+    
+}
+
 //menu display
 void displayMenu(){
     cout << "\n---- Campus Resource Reservation System ----" << endl;

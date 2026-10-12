@@ -50,7 +50,8 @@ class ReservationManager{
     ReservationNode* getHead() const;
 
     //adds new reservation to active linked list, r is Reservation object to be added
-    void createReserv(Reservation r);
+    //showmessage is false when loading from file, message wont print for every line
+    void createReserv(Reservation r, bool showMessage = true);
 
     //cancels an existing reservation, cancelled reservation is removed from linkedlist
     bool cancelReserv(int reservationID); //replace with actual rID
@@ -75,6 +76,9 @@ class ReservationManager{
 
     //restores most recent cancelled reservation from stack
     void undoCancel();
+
+    //displays cancelled reservations, most recent first
+    void viewCancelHistory() const;
 
 };
 

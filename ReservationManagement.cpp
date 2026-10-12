@@ -35,7 +35,7 @@ ReservationNode* ReservationManager::getHead() const{
 }
 
 //creates Reservation
-void ReservationManager::createReserv(Reservation r){
+void ReservationManager::createReserv(Reservation r, bool showMessage){
   //create new node containing reservation
   ReservationNode* newNode = new ReservationNode(r);
 
@@ -43,8 +43,9 @@ void ReservationManager::createReserv(Reservation r){
   newNode->next = head;
   head = newNode;
 
-  cout << "Your reservation was created successfully." << endl;
-
+  if(showMessage){
+    cout << "Your reservation was created successfully." << endl;
+  }
 }
 
 //displays all active reservations
@@ -90,7 +91,7 @@ Reservation* ReservationManager::searchReserv(int reservationID){
 
 //uses lin search to check each resourceID until it matches
 int ReservationManager::linearSearchResource(const vector<Resource>& resources, const string& targetID) const{
-  for(int i = 0; i < static_cast<int>(resource.size()); i++){
+  for(int i = 0; i < static_cast<int>(resources.size()); i++){
     if(resources[i].getResourceID()==targetID){
       return i;
     }
@@ -108,7 +109,8 @@ bool ReservationManager::cancelReserv(int reservationID){
     
     if (current->data.getReservationID() == reservationID){
 
-      //save reservation to stack
+      //mark as cancelled and save reserve to stack
+      cuurent->data.cancel();
       cancelHistory.push(current->data);
 
       //remove first node
@@ -200,5 +202,22 @@ void ReservationManager::undoCancel(){
   createReserv(restored);
 
   cout << "Cancelled reservation has been retrieved, reservation now active." << endl; 
-  
+
+}
+
+//display cancel history
+void ReservationManager::viewCancelHistory() const{
+  if (cancelHistory.empty()){
+    cout << "No cancellation history." << endl;
+    return;
+  }
+
+  stack<Reservation> temp = cancelHistory;
+
+  cout << "Most recent first:" << endl;
+
+  while (!temp.empty()){
+    temp.top().display();
+    temp.pop();
+  }
 }
