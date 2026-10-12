@@ -14,6 +14,8 @@
 #include <cctype>
 #include <cstdlib>
 #include <queue>
+#include <functional>
+#include <algorithm>
 
 using namespace std;
 
@@ -177,7 +179,7 @@ ReportGenerator::ReportGenerator(ReservationManager* rm, vector<Resource>* resou
     this->waitingList = waitingList;
 }
 
-//Availability resport
+//Availability report
 void ReportGenerator::availabilityReport(){
     cout << "\n==== Current Availability ====\n";
 
@@ -434,10 +436,137 @@ void searchReservation(ReservationManager& manager){
     found->display();
 }
 
+// Merge sorted sections
+void mergeResources(vector<Resource>& resources,
+                    int left, int mid, int right) {
+
+    vector<Resource> temp;
+
+    int i = left;
+    int j = mid + 1;
+
+    while (i <= mid && j <= right) {
+
+        if (resources[i].getResourceName() <=
+            resources[j].getResourceName()) {
+
+            temp.push_back(resources[i++]);
+        }
+        else {
+            temp.push_back(resources[j++]);
+        }
+    }
+
+    while (i <= mid) {
+        temp.push_back(resources[i++]);
+    }
+
+    while (j <= right) {
+        temp.push_back(resources[j++]);
+    }
+
+    for (int k = 0; k < static_cast<int>(temp.size()); k++) {
+        resources[left + k] = temp[k];
+    }
+}
+
+void mergeSortResources(vector<Resource>& resources,
+                        int left, int right) {
+
+    if (left >= right) {
+        return;
+    }
+
+    int mid = left + (right - left) / 2;
+
+    mergeSortResources(resources, left, mid);
+    mergeSortResources(resources, mid + 1, right);
+
+    mergeResources(resources, left, mid, right);
+}
 
 void sortResources(const vector<Resource>& resources){
     cout << "\n---- Sort Resources ----\n";
     //implement
+  // ======================================================
+// MERGE SORT IMPLEMENTATION ADDON
+void mergeResourcesCustom(vector<Resource>& resources,
+                          int left, int mid, int right) {
+
+    vector<Resource> temp;
+
+    int i = left;
+    int j = mid + 1;
+
+    while (i <= mid && j <= right) {
+
+        if (resources[i].getResourceName() <=
+            resources[j].getResourceName()) {
+
+            temp.push_back(resources[i]);
+            i++;
+        }
+        else {
+            temp.push_back(resources[j]);
+            j++;
+        }
+    }
+
+    while (i <= mid) {
+        temp.push_back(resources[i]);
+        i++;
+    }
+
+    while (j <= right) {
+        temp.push_back(resources[j]);
+        j++;
+    }
+
+    for (int k = 0; k < static_cast<int>(temp.size()); k++) {
+        resources[left + k] = temp[k];
+    }
+}
+
+
+void mergeSortCustom(vector<Resource>& resources,
+                     int left, int right) {
+
+    if (left >= right) {
+        return;
+    }
+
+    int mid = left + (right - left) / 2;
+
+    mergeSortCustom(resources, left, mid);
+
+    mergeSortCustom(resources, mid + 1, right);
+
+    mergeResourcesCustom(resources, left, mid, right);
+}
+
+
+void sortResourcesMerge(const vector<Resource>& resources) {
+
+    cout << "\n---- Merge Sort Resources ----\n";
+
+    if (resources.empty()) {
+        cout << "No resources available to sort." << endl;
+        return;
+    }
+
+    vector<Resource> sortedResources = resources;
+
+    mergeSortCustom(sortedResources, 0,
+                    static_cast<int>(sortedResources.size()) - 1);
+
+    cout << "\n---- Resources Sorted by Name ----\n";
+
+    // display sported
+    for (const Resource& resource : sortedResources) {
+        resource.display();
+    }
+
+    cout << "\nMerge Sort completed successfully." << endl;
 }
 
 void generateReport(ReportGenerator& reports){
@@ -505,7 +634,7 @@ int main(){
         break;
     //Sorts all resources    
         case 7:
-        sortResources(resources);
+        sortResourcesMerge(resources);  //changed from "sortResources" to "sortResourcesMerge"
         break;
         
     //gives reports on most elements above  
