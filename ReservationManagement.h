@@ -2,6 +2,8 @@
 #define RESERVATIONMANAGEMENT_H
 
 #include "Reservation.h"
+#include "Resource.h"
+#include <vector>
 #include <queue>
 #include <stack>
 using namespace std;
@@ -55,6 +57,9 @@ class ReservationManager{
 
     //searches reservation with ID
     Reservation* searchReserv(int reservationID); //same thing
+
+    //lin search finds resource ID and returns index
+    int linearSearchResource(const <vector>Resource& resources, const string& targetID) const;
 
     //displays all active reservations in linked list
     void viewReservations();

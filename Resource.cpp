@@ -10,7 +10,7 @@ Resource::Resource(){
 
 //This is an overloaded constructor with all the four accessors
 //intializing variables
-Resource::Resource(const string& id, const string& name, const string& type, bool available): resourceID(id), resourceName(name), resourceType(type), isAvailable(available);
+Resource::Resource(const string& id, const string& name, const string& type, bool available): resourceID(id), resourceName(name), resourceType(type), isAvailable(available)
 {}
 
 //After this we need to have a return for all of the above

@@ -88,6 +88,16 @@ Reservation* ReservationManager::searchReserv(int reservationID){
   return nullptr;
 }
 
+//uses lin search to check each resourceID until it matches
+int ReservationManager::linearSearchResource(const vector<Resource>& resources, const string& targetID) const{
+  for(int i = 0; i < static_cast<int>(resource.size()); i++){
+    if(resources[i].getResourceID()==targetID){
+      return i;
+    }
+  }
+  return -1; //no matches found
+}
+
 //cancels reservation
 bool ReservationManager::cancelReserv(int reservationID){
   ReservationNode* current = head;

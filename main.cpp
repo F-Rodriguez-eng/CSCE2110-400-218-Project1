@@ -368,6 +368,28 @@ void displayResources(const vector<Resource>& resources){
 
 void createReservation(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList){
     cout << "\n---- Create Reservation ----\n";
+
+    string targetID;
+    cout << "Enter Resource ID: ";
+    cin >> targetID;
+    cin.ignore(100, '\n');
+
+    //lin search for resource reserved
+    int index = manager.linearSearchResource(resources, targetID);
+
+    if(index == -1){
+        cout << "Resource not found. Use '1. View Resources to see valid IDs."<<endl;
+        return;
+    }
+
+    cout << "Resource found: " << resources[index] << endl;
+
+    //if unavailable
+    if (!resources[index].getIsAvailable()){
+        cout << "This resource is currently unavailable." << endl;
+        return;
+    }
+
 }
 
 void cancelReservation(ReservationManager& manager){
