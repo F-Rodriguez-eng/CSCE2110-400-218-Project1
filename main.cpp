@@ -485,10 +485,6 @@ void mergeSortResources(vector<Resource>& resources,
     mergeResources(resources, left, mid, right);
 }
 
-void sortResources(const vector<Resource>& resources){
-    cout << "\n---- Sort Resources ----\n";
-    //implement
-  // ======================================================
 // MERGE SORT IMPLEMENTATION ADDON
 void mergeResourcesCustom(vector<Resource>& resources,
                           int left, int mid, int right) {
@@ -569,6 +565,7 @@ void sortResourcesMerge(const vector<Resource>& resources) {
     cout << "\nMerge Sort completed successfully." << endl;
 }
 
+//generates report using functions for each report
 void generateReport(ReportGenerator& reports){
     reports.availabilityReport();
     reports.activeReservationReport();

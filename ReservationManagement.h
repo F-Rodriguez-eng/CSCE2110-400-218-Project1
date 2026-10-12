@@ -59,7 +59,7 @@ class ReservationManager{
     Reservation* searchReserv(int reservationID); //same thing
 
     //lin search finds resource ID and returns index
-    int linearSearchResource(const <vector>Resource& resources, const string& targetID) const;
+    int linearSearchResource(const vector<Resource>& resources, const string& targetID) const;
 
     //displays all active reservations in linked list
     void viewReservations();
