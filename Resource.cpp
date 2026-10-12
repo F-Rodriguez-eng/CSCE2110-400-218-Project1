@@ -9,10 +9,9 @@ Resource::Resource(){
 }
 
 //This is an overloaded constructor with all the four accessors
-Resource::Resource(const string& id, const string& name, const string& type, bool available){
-//lets initialize the variables above
-     : resourceID(id), resourceName(name), resourceType(type), isAvailable(available);
-}
+//intializing variables
+Resource::Resource(const string& id, const string& name, const string& type, bool available): resourceID(id), resourceName(name), resourceType(type), isAvailable(available);
+{}
 
 //After this we need to have a return for all of the above
 //The getters allows some of the parts to access private variables

@@ -347,7 +347,7 @@ bool readYN(const string& prompt){
 void displayMenu(){
     cout << "\n---- Campus Resource Reservation System ----" << endl;
     cout << "1. View Resources" << endl;
-    cout << "2. View Resources" << endl;
+    cout << "2. Create Reservation" << endl;
     cout << "3. Cancel Reservation" << endl;
     cout << "4. View Waiting Lists" << endl;
     cout << "5. Undo Cancellation" << endl;
@@ -366,7 +366,7 @@ void displayResources(const vector<Resource>& resources){
     }
 }
 
-void createReserv(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList){
+void createReservation(ReservationManager& manager, const vector<Resource>& resources, queue<WaitingList>& WaitingList){
     cout << "\n---- Create Reservation ----\n";
 }
 
@@ -451,6 +451,11 @@ int main(){
     //we will use the switch statement to check the user's statement and call the right function
     //we will call all the functions on the display menu as cases
     switch (choice){
+    //exit program
+        case 0:
+        cout << "Goodbye." << endl;
+        break;
+
     //for the first case, we will call all the campus resources
         case 1:
         displayResources(resources);
